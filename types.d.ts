@@ -8,3 +8,10 @@ export type User = {
     accounts: Account[];
     sessions: Session[];
 };
+
+export type Room = {
+    id: string;
+    player1: User;
+    player2: User;
+    createdAt: DateTime;
+};

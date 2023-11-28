@@ -66,4 +66,10 @@ generator client {
     description String
     createdAt   DateTime @default(now()) @db.Timestamptz
   }
-  
+
+  model Room {
+    id          String    @id @default(dbgenerated("uuid_generate_v4()"))
+    player1     String
+    player2     String?
+    createdAt   DateTime @default(now()) @db.Timestamptz
+  }
