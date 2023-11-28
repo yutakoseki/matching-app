@@ -2,6 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import Board from '@/app/game/Board';
 import { useParams } from 'next/navigation';
+import { createClient } from '@supabase/supabase-js';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseApi = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseApi);
 
 export default function Game() {
     const [player1, setPlayer1] = useState<string>('');
@@ -11,6 +15,17 @@ export default function Game() {
     const params = useParams();
 
     useEffect(() => {
+        const roomTable = supabase.from('room');
+        // ここでリアルタイムリスナーの設定だ！
+        const subscription = roomTable
+            .on('UPDATE', (payload: any) => {
+                // ルームテーブルが変更されたときの処理をここに書くんだ
+                console.log('ルームがアップデートされたぜ:', payload);
+                // ここでデータを再フェッチしたり、ステートをアップデートするかもな
+            })
+            .subscribe();
+
+        // お忘れなく、クリーンアップは大事だぜ
         const fetchData = async () => {
             // URLからルームIDを取得
             setRoomId(params.roomId.toString());
@@ -35,6 +50,11 @@ export default function Game() {
         };
 
         fetchData();
+
+        // お忘れなく、クリーンアップは大事だぜ
+        return () => {
+            subscription.unsubscribe();
+        };
     }, [params.roomId]);
 
     return (
