@@ -1,12 +1,14 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function EnterRoom() {
     const { data: session, status } = useSession();
     const id = session?.user?.id;
     const [roomId, setRoomId] = useState<string>('');
+    const router = useRouter();
     const changeRoomIdInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setRoomId(e.target.value);
     };
@@ -27,8 +29,14 @@ export default function EnterRoom() {
         };
 
         // APIへのリクエスト
-        await fetch(url, params);
-        setRoomId('');
+        const response = await fetch(url, params);
+
+        // レスポンスが成功ならページ遷移
+        if (response.ok) {
+            router.push(`/game/${roomId}`);
+        } else {
+            alert('ルームの参加に失敗しました。');
+        }
     };
     return (
         <div>
