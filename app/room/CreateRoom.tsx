@@ -10,6 +10,7 @@ export default function CreateRoom() {
     const id = session?.user?.id;
     const [room, setRoom] = useState<Room[]>([]);
     const router = useRouter();
+
     const handleCreateRoom = async () => {
         // ルームを作成
         const url = 'http://localhost:3000/api/room';

@@ -11,7 +11,7 @@ export type User = {
 
 export type Room = {
     id: string;
-    player1: User;
-    player2: User;
-    createdAt: DateTime;
+    player1: string;
+    player2: string;
+    createdAt: string;
 };

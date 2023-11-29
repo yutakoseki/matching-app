@@ -1,16 +1,17 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import Board from '@/app/game/Board';
-import { useParams } from 'next/navigation';
 import supabase from '@/lib/suapbase';
+import { Room } from '@/types';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function Game() {
+export default function Home() {
     const [player1, setPlayer1] = useState<string>('');
     const [player2, setPlayer2] = useState<string>('');
-    const [ready, setReady] = useState<boolean>(false);
-    const [roomId, setRoomId] = useState<string>('');
-    const params = useParams();
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const roomId = searchParams.get('roomId');
 
+    // DBの変更をリアルタイムで検知
     useEffect(() => {
         const channel = supabase
             .channel('realtime todos')
@@ -22,7 +23,9 @@ export default function Game() {
                     table: 'Room',
                 },
                 (payload) => {
-                    console.log(payload);
+                    const data = payload.new as Room;
+                    const player2FromData = data.player2;
+                    setPlayer2(player2FromData);
                 }
             )
             .subscribe();
@@ -31,43 +34,19 @@ export default function Game() {
         };
     }, []);
 
+    // プレイヤーが揃ったかチェック
     useEffect(() => {
-        const fetchData = async () => {
-            // URLからルームIDを取得
-            setRoomId(params.roomId.toString());
-            // ルーム情報をフェッチ
-            const res = await fetch(
-                `http://localhost:3000/api/room/search?roomId=${params.roomId}`,
-                {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                }
-            );
-            const data = await res.json();
+        if (player2) {
+            router.push(`/game/${roomId}`);
+        }
 
-            setPlayer1(data[0].player1);
-            setPlayer2(data[0].player2);
-
-            if (data[0].player1 !== null && data[0].player2 !== null) {
-                setReady(true);
-            }
-        };
-
-        fetchData();
-    }, [params.roomId]);
+        // 再レンダリングした際にフェッチ
+        
+    }, [player2]);
 
     return (
         <div className="w-screen h-screen bg-white">
-            {ready ? (
-                <>
-                    <h1>ここにユーザー情報表示</h1>
-                    <Board />
-                </>
-            ) : (
-                <p>対戦相手待ち...</p>
-            )}
+            <p>対戦相手待ち...</p>
         </div>
     );
 }
