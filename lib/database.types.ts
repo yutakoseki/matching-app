@@ -1,31 +1,6 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export interface Database {
-    graphql_public: {
-        Tables: {
-            [_ in never]: never;
-        };
-        Views: {
-            [_ in never]: never;
-        };
-        Functions: {
-            graphql: {
-                Args: {
-                    operationName?: string;
-                    query?: string;
-                    variables?: Json;
-                    extensions?: Json;
-                };
-                Returns: Json;
-            };
-        };
-        Enums: {
-            [_ in never]: never;
-        };
-        CompositeTypes: {
-            [_ in never]: never;
-        };
-    };
     public: {
         Tables: {
             _prisma_migrations: {
@@ -61,474 +36,137 @@ export interface Database {
                 };
                 Relationships: [];
             };
-            _TenantToUser: {
+            Account: {
                 Row: {
-                    A: string;
-                    B: string;
-                };
-                Insert: {
-                    A: string;
-                    B: string;
-                };
-                Update: {
-                    A?: string;
-                    B?: string;
-                };
-                Relationships: [
-                    {
-                        foreignKeyName: '_TenantToUser_A_fkey';
-                        columns: ['A'];
-                        referencedRelation: 'Tenant';
-                        referencedColumns: ['id'];
-                    },
-                    {
-                        foreignKeyName: '_TenantToUser_B_fkey';
-                        columns: ['B'];
-                        referencedRelation: 'User';
-                        referencedColumns: ['id'];
-                    },
-                ];
-            };
-            ChatFlag: {
-                Row: {
-                    createdAt: string;
+                    access_token: string | null;
+                    expires_at: number | null;
                     id: string;
-                    messageId: string;
-                    seen: boolean;
-                    updatedAt: string;
-                    userId: string;
-                    watchLater: boolean;
-                };
-                Insert: {
-                    createdAt?: string;
-                    id?: string;
-                    messageId: string;
-                    seen?: boolean;
-                    updatedAt?: string;
-                    userId: string;
-                    watchLater?: boolean;
-                };
-                Update: {
-                    createdAt?: string;
-                    id?: string;
-                    messageId?: string;
-                    seen?: boolean;
-                    updatedAt?: string;
-                    userId?: string;
-                    watchLater?: boolean;
-                };
-                Relationships: [
-                    {
-                        foreignKeyName: 'ChatFlag_messageId_fkey';
-                        columns: ['messageId'];
-                        referencedRelation: 'Message';
-                        referencedColumns: ['id'];
-                    },
-                    {
-                        foreignKeyName: 'ChatFlag_userId_fkey';
-                        columns: ['userId'];
-                        referencedRelation: 'User';
-                        referencedColumns: ['id'];
-                    },
-                ];
-            };
-            ChatStamp: {
-                Row: {
-                    createdAt: string;
-                    emoji: string;
-                    id: string;
-                    messageId: string;
-                    updatedAt: string;
+                    id_token: string | null;
+                    provider: string;
+                    providerAccountId: string;
+                    refresh_token: string | null;
+                    scope: string | null;
+                    session_state: string | null;
+                    token_type: string | null;
+                    type: string;
                     userId: string;
                 };
                 Insert: {
-                    createdAt?: string;
-                    emoji: string;
+                    access_token?: string | null;
+                    expires_at?: number | null;
                     id?: string;
-                    messageId: string;
-                    updatedAt?: string;
+                    id_token?: string | null;
+                    provider: string;
+                    providerAccountId: string;
+                    refresh_token?: string | null;
+                    scope?: string | null;
+                    session_state?: string | null;
+                    token_type?: string | null;
+                    type: string;
                     userId: string;
                 };
                 Update: {
-                    createdAt?: string;
-                    emoji?: string;
+                    access_token?: string | null;
+                    expires_at?: number | null;
                     id?: string;
-                    messageId?: string;
-                    updatedAt?: string;
+                    id_token?: string | null;
+                    provider?: string;
+                    providerAccountId?: string;
+                    refresh_token?: string | null;
+                    scope?: string | null;
+                    session_state?: string | null;
+                    token_type?: string | null;
+                    type?: string;
                     userId?: string;
                 };
                 Relationships: [
                     {
-                        foreignKeyName: 'ChatStamp_messageId_fkey';
-                        columns: ['messageId'];
-                        referencedRelation: 'Message';
-                        referencedColumns: ['id'];
-                    },
-                    {
-                        foreignKeyName: 'ChatStamp_userId_fkey';
+                        foreignKeyName: 'Account_userId_fkey';
                         columns: ['userId'];
+                        isOneToOne: false;
                         referencedRelation: 'User';
                         referencedColumns: ['id'];
                     },
                 ];
             };
-            File: {
+            Post: {
                 Row: {
                     createdAt: string;
-                    id: string;
-                    mimeType: string;
-                    size: number;
-                    updatedAt: string;
-                    url: string;
+                    description: string;
+                    id: number;
+                    title: string;
                 };
                 Insert: {
                     createdAt?: string;
-                    id?: string;
-                    mimeType: string;
-                    size: number;
-                    updatedAt?: string;
-                    url: string;
+                    description: string;
+                    id?: number;
+                    title: string;
                 };
                 Update: {
                     createdAt?: string;
-                    id?: string;
-                    mimeType?: string;
-                    size?: number;
-                    updatedAt?: string;
-                    url?: string;
+                    description?: string;
+                    id?: number;
+                    title?: string;
                 };
                 Relationships: [];
             };
-            FileRelation: {
+            Reset: {
                 Row: {
-                    fileId: string;
-                    messageId: string | null;
-                    taskId: string;
+                    id: number;
                 };
                 Insert: {
-                    fileId: string;
-                    messageId?: string | null;
-                    taskId: string;
+                    id?: number;
                 };
                 Update: {
-                    fileId?: string;
-                    messageId?: string | null;
-                    taskId?: string;
-                };
-                Relationships: [
-                    {
-                        foreignKeyName: 'FileRelation_fileId_fkey';
-                        columns: ['fileId'];
-                        referencedRelation: 'File';
-                        referencedColumns: ['id'];
-                    },
-                    {
-                        foreignKeyName: 'FileRelation_messageId_fkey';
-                        columns: ['messageId'];
-                        referencedRelation: 'Message';
-                        referencedColumns: ['id'];
-                    },
-                    {
-                        foreignKeyName: 'FileRelation_taskId_fkey';
-                        columns: ['taskId'];
-                        referencedRelation: 'Task';
-                        referencedColumns: ['id'];
-                    },
-                ];
-            };
-            Message: {
-                Row: {
-                    body: Json | null;
-                    createdAt: string;
-                    id: string;
-                    taskId: string;
-                    updatedAt: string;
-                    userId: string;
-                };
-                Insert: {
-                    body?: Json | null;
-                    createdAt?: string;
-                    id?: string;
-                    taskId: string;
-                    updatedAt?: string;
-                    userId: string;
-                };
-                Update: {
-                    body?: Json | null;
-                    createdAt?: string;
-                    id?: string;
-                    taskId?: string;
-                    updatedAt?: string;
-                    userId?: string;
-                };
-                Relationships: [
-                    {
-                        foreignKeyName: 'Message_taskId_fkey';
-                        columns: ['taskId'];
-                        referencedRelation: 'Task';
-                        referencedColumns: ['id'];
-                    },
-                    {
-                        foreignKeyName: 'Message_userId_fkey';
-                        columns: ['userId'];
-                        referencedRelation: 'User';
-                        referencedColumns: ['id'];
-                    },
-                ];
-            };
-            Project: {
-                Row: {
-                    createdAt: string;
-                    description: string | null;
-                    endDate: string | null;
-                    id: string;
-                    name: string;
-                    status: string;
-                    taskCount: number;
-                    tenantId: string;
-                    updatedAt: string;
-                };
-                Insert: {
-                    createdAt?: string;
-                    description?: string | null;
-                    endDate?: string | null;
-                    id?: string;
-                    name: string;
-                    status: string;
-                    taskCount?: number;
-                    tenantId: string;
-                    updatedAt?: string;
-                };
-                Update: {
-                    createdAt?: string;
-                    description?: string | null;
-                    endDate?: string | null;
-                    id?: string;
-                    name?: string;
-                    status?: string;
-                    taskCount?: number;
-                    tenantId?: string;
-                    updatedAt?: string;
-                };
-                Relationships: [
-                    {
-                        foreignKeyName: 'Project_tenantId_fkey';
-                        columns: ['tenantId'];
-                        referencedRelation: 'Tenant';
-                        referencedColumns: ['id'];
-                    },
-                ];
-            };
-            ProjectPin: {
-                Row: {
-                    createdAt: string;
-                    id: string;
-                    projectId: string;
-                    updatedAt: string;
-                    userId: string;
-                };
-                Insert: {
-                    createdAt?: string;
-                    id?: string;
-                    projectId: string;
-                    updatedAt?: string;
-                    userId: string;
-                };
-                Update: {
-                    createdAt?: string;
-                    id?: string;
-                    projectId?: string;
-                    updatedAt?: string;
-                    userId?: string;
-                };
-                Relationships: [
-                    {
-                        foreignKeyName: 'ProjectPin_projectId_fkey';
-                        columns: ['projectId'];
-                        referencedRelation: 'Project';
-                        referencedColumns: ['id'];
-                    },
-                    {
-                        foreignKeyName: 'ProjectPin_userId_fkey';
-                        columns: ['userId'];
-                        referencedRelation: 'User';
-                        referencedColumns: ['id'];
-                    },
-                ];
-            };
-            Task: {
-                Row: {
-                    createdAt: string;
-                    description: string | null;
-                    endDate: string | null;
-                    id: string;
-                    name: string | null;
-                    projectId: string;
-                    status: string;
-                    taskNo: number | null;
-                    updatedAt: string;
-                };
-                Insert: {
-                    createdAt?: string;
-                    description?: string | null;
-                    endDate?: string | null;
-                    id?: string;
-                    name?: string | null;
-                    projectId: string;
-                    status: string;
-                    taskNo?: number | null;
-                    updatedAt?: string;
-                };
-                Update: {
-                    createdAt?: string;
-                    description?: string | null;
-                    endDate?: string | null;
-                    id?: string;
-                    name?: string | null;
-                    projectId?: string;
-                    status?: string;
-                    taskNo?: number | null;
-                    updatedAt?: string;
-                };
-                Relationships: [
-                    {
-                        foreignKeyName: 'Task_projectId_fkey';
-                        columns: ['projectId'];
-                        referencedRelation: 'Project';
-                        referencedColumns: ['id'];
-                    },
-                ];
-            };
-            TaskTag: {
-                Row: {
-                    createdAt: string;
-                    id: string;
-                    tagString: string;
-                    taskId: string;
-                    updatedAt: string;
-                    userId: string;
-                };
-                Insert: {
-                    createdAt?: string;
-                    id?: string;
-                    tagString: string;
-                    taskId: string;
-                    updatedAt?: string;
-                    userId: string;
-                };
-                Update: {
-                    createdAt?: string;
-                    id?: string;
-                    tagString?: string;
-                    taskId?: string;
-                    updatedAt?: string;
-                    userId?: string;
-                };
-                Relationships: [
-                    {
-                        foreignKeyName: 'TaskTag_taskId_fkey';
-                        columns: ['taskId'];
-                        referencedRelation: 'Task';
-                        referencedColumns: ['id'];
-                    },
-                    {
-                        foreignKeyName: 'TaskTag_userId_fkey';
-                        columns: ['userId'];
-                        referencedRelation: 'User';
-                        referencedColumns: ['id'];
-                    },
-                ];
-            };
-            TaskUser: {
-                Row: {
-                    createdAt: string;
-                    id: string;
-                    taskId: string;
-                    updatedAt: string;
-                    userId: string;
-                };
-                Insert: {
-                    createdAt?: string;
-                    id?: string;
-                    taskId: string;
-                    updatedAt?: string;
-                    userId: string;
-                };
-                Update: {
-                    createdAt?: string;
-                    id?: string;
-                    taskId?: string;
-                    updatedAt?: string;
-                    userId?: string;
-                };
-                Relationships: [
-                    {
-                        foreignKeyName: 'TaskUser_taskId_fkey';
-                        columns: ['taskId'];
-                        referencedRelation: 'Task';
-                        referencedColumns: ['id'];
-                    },
-                    {
-                        foreignKeyName: 'TaskUser_userId_fkey';
-                        columns: ['userId'];
-                        referencedRelation: 'User';
-                        referencedColumns: ['id'];
-                    },
-                ];
-            };
-            Tenant: {
-                Row: {
-                    createdAt: string;
-                    id: string;
-                    isSuspended: boolean;
-                    name: string | null;
-                    updatedAt: string;
-                };
-                Insert: {
-                    createdAt?: string;
-                    id?: string;
-                    isSuspended?: boolean;
-                    name?: string | null;
-                    updatedAt?: string;
-                };
-                Update: {
-                    createdAt?: string;
-                    id?: string;
-                    isSuspended?: boolean;
-                    name?: string | null;
-                    updatedAt?: string;
+                    id?: number;
                 };
                 Relationships: [];
             };
-            UnreadMessageInfo: {
+            Room: {
                 Row: {
-                    readDateTime: string | null;
-                    taskId: string;
-                    unreadCount: number;
+                    createdAt: string;
+                    id: string;
+                    player1: string;
+                    player2: string | null;
+                };
+                Insert: {
+                    createdAt?: string;
+                    id?: string;
+                    player1: string;
+                    player2?: string | null;
+                };
+                Update: {
+                    createdAt?: string;
+                    id?: string;
+                    player1?: string;
+                    player2?: string | null;
+                };
+                Relationships: [];
+            };
+            Session: {
+                Row: {
+                    expires: string;
+                    id: string;
+                    sessionToken: string;
                     userId: string;
                 };
                 Insert: {
-                    readDateTime?: string | null;
-                    taskId: string;
-                    unreadCount?: number;
+                    expires: string;
+                    id?: string;
+                    sessionToken: string;
                     userId: string;
                 };
                 Update: {
-                    readDateTime?: string | null;
-                    taskId?: string;
-                    unreadCount?: number;
+                    expires?: string;
+                    id?: string;
+                    sessionToken?: string;
                     userId?: string;
                 };
                 Relationships: [
                     {
-                        foreignKeyName: 'UnreadMessageInfo_taskId_fkey';
-                        columns: ['taskId'];
-                        referencedRelation: 'Task';
-                        referencedColumns: ['id'];
-                    },
-                    {
-                        foreignKeyName: 'UnreadMessageInfo_userId_fkey';
+                        foreignKeyName: 'Session_userId_fkey';
                         columns: ['userId'];
+                        isOneToOne: false;
                         referencedRelation: 'User';
                         referencedColumns: ['id'];
                     },
@@ -536,231 +174,55 @@ export interface Database {
             };
             User: {
                 Row: {
-                    bio: string | null;
-                    createdAt: string;
-                    email: string;
-                    emoji: string | null;
+                    email: string | null;
+                    emailVerified: string | null;
                     id: string;
-                    isActive: boolean;
-                    isServiceManager: boolean;
-                    name: string;
-                    profileUrl: string | null;
-                    role: string | null;
-                    updatedAt: string;
-                };
-                Insert: {
-                    bio?: string | null;
-                    createdAt?: string;
-                    email: string;
-                    emoji?: string | null;
-                    id: string;
-                    isActive?: boolean;
-                    isServiceManager?: boolean;
-                    name: string;
-                    profileUrl?: string | null;
-                    role?: string | null;
-                    updatedAt?: string;
-                };
-                Update: {
-                    bio?: string | null;
-                    createdAt?: string;
-                    email?: string;
-                    emoji?: string | null;
-                    id?: string;
-                    isActive?: boolean;
-                    isServiceManager?: boolean;
-                    name?: string;
-                    profileUrl?: string | null;
-                    role?: string | null;
-                    updatedAt?: string;
-                };
-                Relationships: [];
-            };
-        };
-        Views: {
-            [_ in never]: never;
-        };
-        Functions: {
-            [_ in never]: never;
-        };
-        Enums: {
-            [_ in never]: never;
-        };
-        CompositeTypes: {
-            [_ in never]: never;
-        };
-    };
-    storage: {
-        Tables: {
-            buckets: {
-                Row: {
-                    allowed_mime_types: string[] | null;
-                    avif_autodetection: boolean | null;
-                    created_at: string | null;
-                    file_size_limit: number | null;
-                    id: string;
-                    name: string;
-                    owner: string | null;
-                    public: boolean | null;
-                    updated_at: string | null;
-                };
-                Insert: {
-                    allowed_mime_types?: string[] | null;
-                    avif_autodetection?: boolean | null;
-                    created_at?: string | null;
-                    file_size_limit?: number | null;
-                    id: string;
-                    name: string;
-                    owner?: string | null;
-                    public?: boolean | null;
-                    updated_at?: string | null;
-                };
-                Update: {
-                    allowed_mime_types?: string[] | null;
-                    avif_autodetection?: boolean | null;
-                    created_at?: string | null;
-                    file_size_limit?: number | null;
-                    id?: string;
-                    name?: string;
-                    owner?: string | null;
-                    public?: boolean | null;
-                    updated_at?: string | null;
-                };
-                Relationships: [
-                    {
-                        foreignKeyName: 'buckets_owner_fkey';
-                        columns: ['owner'];
-                        referencedRelation: 'users';
-                        referencedColumns: ['id'];
-                    },
-                ];
-            };
-            migrations: {
-                Row: {
-                    executed_at: string | null;
-                    hash: string;
-                    id: number;
-                    name: string;
-                };
-                Insert: {
-                    executed_at?: string | null;
-                    hash: string;
-                    id: number;
-                    name: string;
-                };
-                Update: {
-                    executed_at?: string | null;
-                    hash?: string;
-                    id?: number;
-                    name?: string;
-                };
-                Relationships: [];
-            };
-            objects: {
-                Row: {
-                    bucket_id: string | null;
-                    created_at: string | null;
-                    id: string;
-                    last_accessed_at: string | null;
-                    metadata: Json | null;
+                    image: string | null;
                     name: string | null;
-                    owner: string | null;
-                    path_tokens: string[] | null;
-                    updated_at: string | null;
-                    version: string | null;
+                    password: string;
                 };
                 Insert: {
-                    bucket_id?: string | null;
-                    created_at?: string | null;
+                    email?: string | null;
+                    emailVerified?: string | null;
                     id?: string;
-                    last_accessed_at?: string | null;
-                    metadata?: Json | null;
+                    image?: string | null;
                     name?: string | null;
-                    owner?: string | null;
-                    path_tokens?: string[] | null;
-                    updated_at?: string | null;
-                    version?: string | null;
+                    password: string;
                 };
                 Update: {
-                    bucket_id?: string | null;
-                    created_at?: string | null;
+                    email?: string | null;
+                    emailVerified?: string | null;
                     id?: string;
-                    last_accessed_at?: string | null;
-                    metadata?: Json | null;
+                    image?: string | null;
                     name?: string | null;
-                    owner?: string | null;
-                    path_tokens?: string[] | null;
-                    updated_at?: string | null;
-                    version?: string | null;
+                    password?: string;
                 };
-                Relationships: [
-                    {
-                        foreignKeyName: 'objects_bucketId_fkey';
-                        columns: ['bucket_id'];
-                        referencedRelation: 'buckets';
-                        referencedColumns: ['id'];
-                    },
-                ];
+                Relationships: [];
+            };
+            VerificationToken: {
+                Row: {
+                    expires: string;
+                    identifier: string;
+                    token: string;
+                };
+                Insert: {
+                    expires: string;
+                    identifier: string;
+                    token: string;
+                };
+                Update: {
+                    expires?: string;
+                    identifier?: string;
+                    token?: string;
+                };
+                Relationships: [];
             };
         };
         Views: {
             [_ in never]: never;
         };
         Functions: {
-            can_insert_object: {
-                Args: {
-                    bucketid: string;
-                    name: string;
-                    owner: string;
-                    metadata: Json;
-                };
-                Returns: undefined;
-            };
-            extension: {
-                Args: {
-                    name: string;
-                };
-                Returns: string;
-            };
-            filename: {
-                Args: {
-                    name: string;
-                };
-                Returns: string;
-            };
-            foldername: {
-                Args: {
-                    name: string;
-                };
-                Returns: unknown;
-            };
-            get_size_by_bucket: {
-                Args: Record<PropertyKey, never>;
-                Returns: {
-                    size: number;
-                    bucket_id: string;
-                }[];
-            };
-            search: {
-                Args: {
-                    prefix: string;
-                    bucketname: string;
-                    limits?: number;
-                    levels?: number;
-                    offsets?: number;
-                    search?: string;
-                    sortcolumn?: string;
-                    sortorder?: string;
-                };
-                Returns: {
-                    name: string;
-                    id: string;
-                    updated_at: string;
-                    created_at: string;
-                    last_accessed_at: string;
-                    metadata: Json;
-                }[];
-            };
+            [_ in never]: never;
         };
         Enums: {
             [_ in never]: never;

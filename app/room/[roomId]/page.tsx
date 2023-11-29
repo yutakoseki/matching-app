@@ -2,8 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Board from '@/app/game/Board';
 import { useParams } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { createClient } from '@supabase/supabase-js';
+import supabase from '@/lib/suapbase';
 
 export default function Game() {
     const [player1, setPlayer1] = useState<string>('');
@@ -11,10 +10,6 @@ export default function Game() {
     const [ready, setReady] = useState<boolean>(false);
     const [roomId, setRoomId] = useState<string>('');
     const params = useParams();
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY || '';
-    // const supabase = createClientComponentClient(supabaseUrl, supabaseAnonKey);
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
     useEffect(() => {
         const channel = supabase
