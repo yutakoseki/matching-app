@@ -50,6 +50,7 @@ generator client {
     image               String?
     accounts            Account[]
     sessions            Session[]
+    rooms               Room[]
   }
   
   model VerificationToken {
@@ -72,4 +73,5 @@ generator client {
     player1     String
     player2     String?
     createdAt   DateTime @default(now()) @db.Timestamptz
+    users       User[]
   }
