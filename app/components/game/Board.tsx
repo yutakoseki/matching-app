@@ -102,6 +102,50 @@ export default function Board() {
                     setPlayer1_stone70(realtimePlayer170);
                     setPlayer2_stone90(realtimePlayer290);
                     setPlayer2_stone70(realtimePlayer270);
+
+                    // 手番の表示の管理
+                    // 自分の番
+                    if (userid !== realtimeNextPlayer) {
+                        if (userid === player1Id) {
+                            if (nextPlayer2Stone90) {
+                                setNextPlayer1Stone90(false);
+                                setNextPlayer1Stone70(true);
+                            } else if (nextPlayer2Stone70) {
+                                setNextPlayer1Stone90(true);
+                                setNextPlayer1Stone70(false);
+                            }
+                        }
+                        if (userid === player2Id) {
+                            if (nextPlayer2Stone90) {
+                                setNextPlayer2Stone90(true);
+                                setNextPlayer2Stone70(false);
+                            } else if (nextPlayer2Stone70) {
+                                setNextPlayer2Stone90(false);
+                                setNextPlayer2Stone70(true);
+                            }
+                        }
+                    }
+                    // 相手の番
+                    if (userid === realtimeNextPlayer) {
+                        if (userid === player1Id) {
+                            if (nextPlayer1Stone90) {
+                                setNextPlayer1Stone90(false);
+                                setNextPlayer1Stone70(true);
+                            } else if (nextPlayer1Stone70) {
+                                setNextPlayer1Stone90(true);
+                                setNextPlayer1Stone70(false);
+                            }
+                        }
+                        if (userid === player2Id) {
+                            if (nextPlayer2Stone90) {
+                                setNextPlayer2Stone90(true);
+                                setNextPlayer2Stone70(false);
+                            } else if (nextPlayer2Stone70) {
+                                setNextPlayer2Stone90(false);
+                                setNextPlayer2Stone70(true);
+                            }
+                        }
+                    }
                 }
             )
             .subscribe();
@@ -124,100 +168,72 @@ export default function Board() {
         newBoardValues[index] = 1;
         setBoardValues(newBoardValues);
 
+        // 自分がクリックした場合のみ処理
         if (userid !== nextPlayer) {
-            // if (!player1.includes(clickNumber)) {
-            // player1の手番のカウント
-            // setCountPlayer1((prevCount) => prevCount + 1);
-            // 石の確率事に配列に格納して管理
-            const resStoneProbability: number = Stone(countPlayer1);
-            if (resStoneProbability === 90) {
-                if (userid === player1Id) {
+            let resStoneProbability: number = 0;
+
+            // Player1がクリック
+            if (userid === player1Id) {
+                resStoneProbability = Stone(countPlayer1);
+                if (resStoneProbability === 90) {
                     setPlayer1_stone90((prevPlayer1_stone90) => [
                         ...prevPlayer1_stone90,
                         clickNumber,
                     ]);
+                    kifu90 = clickNumber;
                 }
-                if (userid === player2Id) {
+                if (resStoneProbability === 70) {
+                    setPlayer1_stone70((prevPlayer1_stone70) => [
+                        ...prevPlayer1_stone70,
+                        clickNumber,
+                    ]);
+                    kifu70 = clickNumber;
+                }
+                setPlayer1((prevPlayer1) => [...prevPlayer1, clickNumber]);
+            }
+
+            // Player2がクリック
+            if (userid === player2Id) {
+                resStoneProbability = Stone(countPlayer2);
+                if (resStoneProbability === 90) {
                     setPlayer2_stone90((prevPlayer2_stone90) => [
                         ...prevPlayer2_stone90,
                         clickNumber,
                     ]);
+                    kifu90 = clickNumber;
                 }
-                kifu90 = clickNumber;
-            }
-            if (resStoneProbability === 70) {
-                if (userid === player1Id) {
-                    setPlayer1_stone70((prevPlayer1_stone70) => [
-                        ...prevPlayer1_stone70,
+                if (resStoneProbability === 70) {
+                    setPlayer2_stone70((prevPlayer2_stone70) => [
+                        ...prevPlayer2_stone70,
                         clickNumber,
                     ]);
+                    kifu70 = clickNumber;
                 }
-                if (userid === player2Id) {
-                    setPlayer1_stone70((prevPlayer1_stone70) => [
-                        ...prevPlayer1_stone70,
-                        clickNumber,
-                    ]);
-                }
-                kifu70 = clickNumber;
-            }
-            if (userid === player1Id) {
-                setPlayer1((prevPlayer1) => [...prevPlayer1, clickNumber]);
-            }
-            if (userid === player2Id) {
                 setPlayer2((prevPlayer2) => [...prevPlayer2, clickNumber]);
             }
-            // setTurn('Player2');
 
-            // 次の手番の石を表示
-            if (nextPlayer1Stone === 1) {
-                setNextPlayer1Stone(2);
-                setNextPlayer1Stone90(false);
-                setNextPlayer1Stone70(true);
-            }
-            if (nextPlayer1Stone === 2) {
-                setNextPlayer1Stone(1);
-                setNextPlayer1Stone70(false);
-                setNextPlayer1Stone90(true);
-            }
+            // 次の手番を管理
+            // if (nextPlayer1Stone === 1 && nextPlayer2Stone === 1) {
+            //     setNextPlayer1Stone(2);
+            //     setNextPlayer1Stone90(false);
+            //     setNextPlayer1Stone70(true);
+            // }
+            // if (nextPlayer1Stone === 2 && nextPlayer2Stone === 2) {
+            //     setNextPlayer1Stone(1);
+            //     setNextPlayer1Stone70(false);
+            //     setNextPlayer1Stone90(true);
+            // }
+            // if (nextPlayer2Stone === 1 && nextPlayer1Stone === 2) {
+            //     setNextPlayer2Stone(2);
+            //     setNextPlayer2Stone90(false);
+            //     setNextPlayer2Stone70(true);
+            // }
+            // if (nextPlayer2Stone === 2 && nextPlayer1Stone === 1) {
+            //     setNextPlayer2Stone(1);
+            //     setNextPlayer2Stone70(false);
+            //     setNextPlayer2Stone90(true);
             // }
         }
-
-        // 後攻
-        // if (userid !== nextPlayer) {
-        //     console.log('後攻');
-        //     if (!player2.includes(clickNumber)) {
-        //         // player2の手番のカウント
-        //         setCountPlayer2((prevCount) => prevCount + 1);
-        //         // 石の確率事に配列に格納して管理
-        //         const resStoneProbability: number = Stone(countPlayer2);
-        //         if (resStoneProbability === 90) {
-        //             setPlayer2_stone90((prevPlayer2_stone90) => [
-        //                 ...prevPlayer2_stone90,
-        //                 clickNumber,
-        //             ]);
-        //         }
-        //         if (resStoneProbability === 70) {
-        //             setPlayer2_stone70((prevPlayer2_stone70) => [
-        //                 ...prevPlayer2_stone70,
-        //                 clickNumber,
-        //             ]);
-        //         }
-        //         setPlayer2((prevPlayer2) => [...prevPlayer2, clickNumber]);
-        //         setTurn('Player1');
-
-        //         // 次の手番の石を表示
-        //         if (nextPlayer2Stone === 1) {
-        //             setNextPlayer2Stone(2);
-        //             setNextPlayer2Stone90(false);
-        //             setNextPlayer2Stone70(true);
-        //         }
-        //         if (nextPlayer2Stone === 2) {
-        //             setNextPlayer2Stone(1);
-        //             setNextPlayer2Stone70(false);
-        //             setNextPlayer2Stone90(true);
-        //         }
-        //     }
-        // }
 
         // dbに棋譜を保存
         const fetchKifu = async () => {
@@ -237,6 +253,7 @@ export default function Board() {
 
             // 先行
             if (nextPlayer === player2Id) {
+                setCountPlayer1((prevCount) => prevCount + 1);
                 apiNextTurn = player1Id;
                 apiKifu1.push(clickNumber);
                 if (kifu90 > 0) apiKifu190.push(kifu90);
@@ -244,6 +261,7 @@ export default function Board() {
             }
             // 後攻
             if (nextPlayer === player1Id) {
+                setCountPlayer2((prevCount) => prevCount + 1);
                 apiNextTurn = player2Id;
                 apiKifu2.push(clickNumber);
                 if (kifu90 > 0) apiKifu290.push(kifu90);
