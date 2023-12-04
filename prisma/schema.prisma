@@ -21,13 +21,38 @@ generator client {
     emailVerified       DateTime?
     password            String
     image               String?
+    rooms               UsersOnRooms[]
   }
 
   model Room {
     id                  String    @id @default(dbgenerated("uuid_generate_v4()"))
     player1             String
-    player1_name        String
     player2             String?
-    player2_name        String?
+    turn_count          Int
+    next_turn           String?
+    player1_kifu        Int[]
+    player2_kifu        Int[]
+    kifu1_90            Int[]
+    kifu1_70            Int[]
+    kifu2_90            Int[]
+    kifu2_70            Int[]
+    pre_player1_kifu    Int[]
+    pre_player2_kifu    Int[]
+    pre_kifu1_90        Int[]
+    pre_kifu1_70        Int[]
+    pre_kifu2_90        Int[]
+    pre_kifu2_70        Int[]
+    winner              String?
     createdAt           DateTime @default(now()) @db.Timestamptz
+    users               UsersOnRooms[]
+  }
+
+  model UsersOnRooms {
+    user User @relation(fields: [userid], references: [id])
+    userid String
+    room Room @relation(fields: [roomid], references: [id])
+    roomid String
+    createdAt           DateTime @default(now()) @db.Timestamptz
+
+    @@id([userid, roomid])
   }

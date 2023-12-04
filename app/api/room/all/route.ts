@@ -3,12 +3,10 @@ import prisma from '@/lib/prisma';
 
 export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
-    const player1 = searchParams.get('player1');
-    console.log('player1', player1);
+    const id = searchParams.get('roomId');
     const roomArray = await prisma.room.findMany({
         where: {
-            player1: player1 !== null ? player1 : undefined,
-            player2: null,
+            id: id !== null ? id : undefined,
         },
     });
 

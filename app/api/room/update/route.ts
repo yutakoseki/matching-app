@@ -13,6 +13,12 @@ export async function POST(req: NextRequest) {
         },
         data: {
             player2: player2,
+            next_turn: player2,
+            users: {
+                create: {
+                    user: { connect: { id: player2 } },
+                },
+            },
         },
     });
 

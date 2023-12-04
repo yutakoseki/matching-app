@@ -15,10 +15,16 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
     // リクエストボディ
-    const { player1 } = await req.json();
+    const { player1, turn_count } = await req.json();
     const res = await prisma.room.create({
         data: {
             player1: player1,
+            turn_count: turn_count,
+            users: {
+                create: {
+                    user: { connect: { id: player1 } },
+                },
+            },
         },
     });
 

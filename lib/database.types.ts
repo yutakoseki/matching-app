@@ -128,18 +128,21 @@ export interface Database {
                     id: string;
                     player1: string;
                     player2: string | null;
+                    next_turn: string;
                 };
                 Insert: {
                     createdAt?: string;
                     id?: string;
                     player1: string;
                     player2?: string | null;
+                    next_turn?: string;
                 };
                 Update: {
                     createdAt?: string;
                     id?: string;
                     player1?: string;
                     player2?: string | null;
+                    next_turn?: string;
                 };
                 Relationships: [];
             };

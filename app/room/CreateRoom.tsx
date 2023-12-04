@@ -21,6 +21,7 @@ export default function CreateRoom() {
             },
             body: JSON.stringify({
                 player1: id,
+                turn_count: 1,
             }),
         };
         await fetch(url, params);
