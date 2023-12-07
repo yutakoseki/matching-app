@@ -6,11 +6,7 @@ import Link from 'next/link';
 export default function Login() {
     const { data: session, status } = useSession();
 
-    if (status === 'loading') {
-        return <div>Loading...</div>;
-    }
-
-    if (status !== 'authenticated') {
+    if (status !== 'authenticated' || !session) {
         return (
             <div>
                 <p>あなたはログインしていません</p>
