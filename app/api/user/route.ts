@@ -18,11 +18,6 @@ export async function POST(req: NextRequest) {
             name: name,
             email: email,
             password: password,
-            user: {
-                create: {
-                    user: { connect: { id: id } },
-                },
-            },
         },
     });
 
