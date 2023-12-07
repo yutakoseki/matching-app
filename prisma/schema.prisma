@@ -1,58 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["referentialActions"] // You won't need this in Prisma 3.X or higher.
-  }
-  
-  datasource db {
-    provider          = "postgresql"
-    url       = env("WRITER_DATABASE_URL")
-    directUrl = env("DIRECT_URL")
-  }
-  
-  // reset用
-  model Reset {
-    id        Int     @id @default(autoincrement())
-  }
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialActions"] // You won't need this in Prisma 3.X or higher.
+}
 
-  model User {
-    id                  String    @id @default(dbgenerated("uuid_generate_v4()"))
-    name                String?
-    email               String?   @unique
-    emailVerified       DateTime?
-    password            String
-    image               String?
-    rooms               UsersOnRooms[]
-  }
+datasource db {
+  provider  = "postgresql"
+  url       = env("WRITER_DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
 
-  model Room {
-    id                  String    @id @default(dbgenerated("uuid_generate_v4()"))
-    player1             String
-    player2             String?
-    turn_count          Int
-    next_turn           String?
-    player1_kifu        Int[]
-    player2_kifu        Int[]
-    kifu1_90            Int[]
-    kifu1_70            Int[]
-    kifu2_90            Int[]
-    kifu2_70            Int[]
-    pre_player1_kifu    Int[]
-    pre_player2_kifu    Int[]
-    pre_kifu1_90        Int[]
-    pre_kifu1_70        Int[]
-    pre_kifu2_90        Int[]
-    pre_kifu2_70        Int[]
-    winner              String?
-    createdAt           DateTime @default(now()) @db.Timestamptz
-    users               UsersOnRooms[]
-  }
+// reset用
+model Reset {
+  id Int @id @default(autoincrement())
+}
 
-  model UsersOnRooms {
-    user User @relation(fields: [userid], references: [id])
-    userid String
-    room Room @relation(fields: [roomid], references: [id])
-    roomid String
-    createdAt           DateTime @default(now()) @db.Timestamptz
+model User {
+  id        String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  email     String           @unique
+  password  String
+  image     String?
+  createdAt DateTime         @default(now())
+  profile   Profile?
+  messages  Message[]
+  rooms     UsersOnRooms[]
+  matches   UsersOnMatches[]
+}
 
-    @@id([userid, roomid])
-  }
+model Profile {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  bio        String? // 自己紹介文
+  interests  String[] // 趣味
+  age        Int? // 年齢
+  gender     String? // 性別
+  birthplace String? // 出身地
+  prefecture String? // 都道府県
+  city       String? // 市区町村
+  height     Int? // 身長
+  style      String? // スタイル
+  oneWord    String? // ひとこと
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @unique @db.Uuid
+  createdAt  DateTime @default(now())
+}
+
+model Room {
+  id        String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  users     UsersOnRooms[]
+  messages  RoomsOnMessages[]
+  createdAt DateTime          @default(now())
+}
+
+model UsersOnRooms {
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.Uuid
+  room      Room     @relation(fields: [roomId], references: [id])
+  roomId    String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  @@id([userId, roomId])
+}
+
+model Message {
+  id        String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  text      String
+  roomId    String
+  sender    User              @relation(fields: [senderId], references: [id])
+  senderId  String            @unique @db.Uuid
+  rooms     RoomsOnMessages[]
+  createdAt DateTime          @default(now())
+}
+
+model RoomsOnMessages {
+  room      Room     @relation(fields: [roomId], references: [id])
+  roomId    String   @db.Uuid
+  message   Message  @relation(fields: [messageId], references: [id])
+  messageId String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  @@id([roomId, messageId])
+}
+
+model Match {
+  id        String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  users     UsersOnMatches[]
+  createdAt DateTime         @default(now())
+}
+
+model UsersOnMatches {
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.Uuid
+  match     Match    @relation(fields: [matchId], references: [id])
+  matchId   String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  @@id([userId, matchId])
+}

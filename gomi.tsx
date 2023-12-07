@@ -1,88 +1,91 @@
-'use client';
-import React, { useState, useEffect } from 'react';
-import Board from '@/app/game/Board';
-import { useParams } from 'next/navigation';
-import supabase from '@/lib/suapbase';
-
-export default function Game() {
-    const [player1, setPlayer1] = useState<string>('');
-    const [player2, setPlayer2] = useState<string>('');
-    const [ready, setReady] = useState<boolean>(false);
-    const [roomId, setRoomId] = useState<string>('');
-    const params = useParams();
-
-    const fetchRealtimeData = () => {
-        try {
-            supabase
-                .channel('room-changes')
-                .on(
-                    'postgres_changes',
-                    {
-                        event: '*',
-                        schema: 'public',
-                        table: 'Room',
-                    },
-                    (payload) => {
-                        console.log(payload);
-                        console.log(payload.eventType);
-                        if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
-                            const newPlayer = payload.new.player2;
-                            console.log(newPlayer.toString());
-                            setPlayer2(newPlayer.toString());
-                        }
-                    }
-                )
-                .subscribe();
-            return () => {
-                supabase.channel('room-changes').unsubscribe();
-            };
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    useEffect(() => {
-        // リアルタイムデータ更新
-        fetchRealtimeData();
-    }, []);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            // URLからルームIDを取得
-            setRoomId(params.roomId.toString());
-            // ルーム情報をフェッチ
-            const res = await fetch(
-                `http://localhost:3000/api/room/search?roomId=${params.roomId}`,
-                {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                }
-            );
-            const data = await res.json();
-
-            setPlayer1(data[0].player1);
-            setPlayer2(data[0].player2);
-
-            if (data[0].player1 !== null && data[0].player2 !== null) {
-                setReady(true);
-            }
-        };
-
-        fetchData();
-    }, [params.roomId]);
-
-    return (
-        <div className="w-screen h-screen bg-white">
-            {ready ? (
-                <>
-                    <h1>ここにユーザー情報表示</h1>
-                    <Board />
-                </>
-            ) : (
-                <p>対戦相手待ち...</p>
-            )}
-        </div>
-    );
-}
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["referentialActions"] // You won't need this in Prisma 3.X or higher.
+  }
+  
+  datasource db {
+    provider  = "postgresql"
+    url       = env("WRITER_DATABASE_URL")
+    directUrl = env("DIRECT_URL")
+  }
+  
+  // reset用
+  model Reset {
+    id Int @id @default(autoincrement())
+  }
+  
+  model User {
+    id        String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    email     String           @unique
+    password  String
+    image     String?
+    createdAt DateTime         @default(now())
+    profile   Profile?
+    messages  Message[]
+    rooms     UsersOnRooms[]
+    matches   UsersOnMatches[]
+  }
+  
+  model Profile {
+    id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    bio       String?
+    interests String[]
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String   @unique
+    createdAt DateTime @default(now())
+  }
+  
+  model Room {
+    id        String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    userId    Int
+    users     UsersOnRooms[]
+    messages  RoomsOnMessages[]
+    createdAt DateTime          @default(now())
+  }
+  
+  model UsersOnRooms {
+    user      User     @relation(fields: [userid], references: [id])
+    userid    String
+    room      Room     @relation(fields: [roomid], references: [id])
+    roomid    String
+    createdAt DateTime @default(now())
+  
+    @@id([userid, roomid])
+  }
+  
+  model Message {
+    id        String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    text      String
+    roomId    Int
+    sender    User              @relation(fields: [senderId], references: [id])
+    senderId  String
+    rooms     RoomsOnMessages[]
+    createdAt DateTime          @default(now())
+  }
+  
+  model RoomsOnMessages {
+    room      Room     @relation(fields: [roomid], references: [id])
+    roomid    String
+    message   Message  @relation(fields: [messageid], references: [id])
+    messageid String
+    createdAt DateTime @default(now())
+  
+    @@id([roomid, messageid])
+  }
+  
+  model Match {
+    id        String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    users     UsersOnMatches[]
+    createdAt DateTime         @default(now())
+  }
+  
+  model UsersOnMatches {
+    user      User     @relation(fields: [userid], references: [id])
+    userid    String
+    match     Match    @relation(fields: [matchid], references: [id])
+    matchid   String
+    createdAt DateTime @default(now())
+  
+    @@id([userid, matchid])
+  }
+  
