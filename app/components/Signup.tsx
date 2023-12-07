@@ -18,9 +18,9 @@ export default function Signup() {
         }
 
         // APIのURL
-        // const url = 'https://quantum-tic-tac-entangle.vercel.app/api/user';
+        // const url = 'https://quantum-tic-tac-entangle.vercel.app/api/register';
         // local用
-        const url = 'http://localhost:3000/api/user';
+        const url = 'http://localhost:3000/api/register';
         // リクエストパラメータ
         const params = {
             method: 'POST',

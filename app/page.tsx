@@ -2,10 +2,12 @@
 import { useSession } from 'next-auth/react';
 import Login from './components/Login';
 import Logout from './components/Logout';
+import { useEffect } from 'react';
+import { useCookies } from 'react-cookie';
 
 export default function Home() {
     const { data: session, status } = useSession();
-    console.log(session);
+
     return (
         <div className="bg-zinc-800">
             {status === 'authenticated' ? (

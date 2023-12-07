@@ -5,8 +5,11 @@ export type User = {
     password: string;
     emailVerified: DateTime?;
     image: String?;
-    accounts: Account[];
-    sessions: Session[];
+    createdAt: DateTime;
+    profile: [];
+    messages: Message[];
+    rooms: UsersOnRooms[];
+    matches: UsersOnMatches[];
 };
 
 export type Room = {
