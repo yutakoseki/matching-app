@@ -61,7 +61,7 @@ const components: { title: string; href: string; description: string }[] = [
 const Header = () => {
     const { setTheme } = useTheme();
     return (
-        <div className="py-8 px-10 flex items-center justify-between">
+        <div className="py-8 px-10 flex items-center justify-between h-28">
             <Link href={'/'} className="font-medium">
                 Matching App
             </Link>

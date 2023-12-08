@@ -16,17 +16,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="ja">
             <body className={notoSansJP.className}>
-                <NextAuthProvider>
-                    <ThemeProvider
-                        attribute="class"
-                        defaultTheme="system"
-                        enableSystem
-                        disableTransitionOnChange
-                    >
-                        <Header />
-                        {children}
-                    </ThemeProvider>
-                </NextAuthProvider>
+                <div className="flex flex-col w-screen h-screen">
+                    <NextAuthProvider>
+                        <ThemeProvider
+                            attribute="class"
+                            defaultTheme="system"
+                            enableSystem
+                            disableTransitionOnChange
+                        >
+                            <Header />
+                            {children}
+                        </ThemeProvider>
+                    </NextAuthProvider>
+                </div>
             </body>
         </html>
     );

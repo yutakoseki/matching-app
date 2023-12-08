@@ -31,7 +31,6 @@ export default function Login() {
             </div>
         );
     } else {
-        console.log('session', session);
         return (
             <>
                 <div>ログイン中です</div>

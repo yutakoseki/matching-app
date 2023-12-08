@@ -1,89 +1,115 @@
-// input タグのonChangeを使うためにClient Componentにする
 'use client';
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { Button } from '@/components/ui/button';
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { registerUserSchema } from '@/lib/validationSchema';
 
 export default function Signup() {
     const router = useRouter();
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
 
-    // Userテーブルへデータを書き込む
-    const fetchAsyncAddUser = async () => {
-        // 入力されていないものがあれば、登録しない
-        if (name === '' || email === '' || password === '') {
-            return;
-        }
+    const form = useForm<z.infer<typeof registerUserSchema>>({
+        resolver: zodResolver(registerUserSchema),
+        defaultValues: {
+            name: '',
+            email: '',
+            password: '',
+        },
+    });
+    function onSubmit(values: z.infer<typeof registerUserSchema>) {
+        const createUser = async () => {
+            const url = 'http://localhost:3000/api/register';
+            const params = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: values.name,
+                    email: values.email,
+                    password: values.password,
+                }),
+            };
+            try {
+                await fetch(url, params);
 
-        // APIのURL
-        // const url = 'https://quantum-tic-tac-entangle.vercel.app/api/register';
-        // local用
-        const url = 'http://localhost:3000/api/register';
-        // リクエストパラメータ
-        const params = {
-            method: 'POST',
-            // JSON形式のデータのヘッダー
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            // リクエストボディ
-            body: JSON.stringify({
-                name: name,
-                email: email,
-                password: password,
-            }),
+                // 画面ログイン画面へ遷移
+                router.push('/login');
+            } catch (error) {
+                alert('登録に失敗しました');
+                console.log('500 Internal Server Error: ', error);
+            }
         };
-
-        // APIへのリクエスト
-        await fetch(url, params);
-
-        // 入力値を初期化
-        setName('');
-        setEmail('');
-        setPassword('');
-
-        // 画面をリフレッシュ
-        router.refresh();
-    };
-
-    // inputタグのvalueに変化があった際に実行される
-    const changeNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value);
-    };
-    const changeEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-    };
-    const changePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-    };
+        createUser();
+    }
 
     return (
-        <div>
-            <h2>ユーザー登録</h2>
-            <div>
-                <div>
-                    <label>Name:</label>
-                    <input type="text" name="name" value={name} onChange={changeNameInput} />
-                </div>
-                <div>
-                    <label>email:</label>
-                    <input type="text" name="email" value={email} onChange={changeEmailInput} />
-                </div>
-                <div>
-                    <label>password:</label>
-                    <input
-                        type="text"
-                        name="password"
-                        value={password}
-                        onChange={changePasswordInput}
-                    />
-                </div>
-                <div>
-                    <button onClick={fetchAsyncAddUser}>登録</button>
-                </div>
-            </div>
+        <div className="flex items-center justify-center w-full h-full">
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-1/3 ">
+                    <div className="p-2">
+                        <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>ユーザー名</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="username" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div className="p-2">
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>メールアドレス</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="email" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div className="p-2">
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>パスワード</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="password" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <Button type="submit" className="w-full">
+                        登録
+                    </Button>
+                </form>
+            </Form>
         </div>
     );
 }
