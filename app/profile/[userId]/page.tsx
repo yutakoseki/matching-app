@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { User } from '@/types';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 
@@ -11,12 +12,11 @@ export default function Profile() {
     // const { data: session, status } = useSession();
     const [profile, setProfile] = useState<User>();
     const [cookies, setCookie, RemoveCookie] = useCookies(['session', 'profile']);
+    const router = useRouter();
     // プロフィールを取得
     useEffect(() => {
         const getProfile = async () => {
-            // const userId = session?.user?.id;
             const userId = cookies.session.user.id;
-            const profile = cookies.profile;
             const res = await fetch(`http://localhost:3000/api/profile?userId=${userId}`, {
                 method: 'GET',
                 headers: {
@@ -30,12 +30,14 @@ export default function Profile() {
         getProfile();
     }, []);
 
+    const handleClick = () => {
+        router.push(`/profile/edit/${cookies.session.user.id}`);
+    };
+
     return (
         <>
             <h1>プロフィール</h1>
-            <Button>
-                <Link href={`/profile/edit/${cookies.session.user.id}`}>編集</Link>
-            </Button>
+            <Button onClick={() => handleClick()}>編集</Button>
             {/* profileがあれば表示 */}
             {profile && (
                 <div>

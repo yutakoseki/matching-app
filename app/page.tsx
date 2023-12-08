@@ -7,6 +7,11 @@ import { useCookies } from 'react-cookie';
 
 export default function Home() {
     const { data: session, status } = useSession();
+    const [cookies, setCookie, RemoveCookie] = useCookies(['session']);
+    // セッションをcookieに保存
+    if (status === 'authenticated') {
+        setCookie('session', session);
+    }
 
     return (
         <div className="bg-zinc-800">
