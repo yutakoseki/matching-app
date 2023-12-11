@@ -1,12 +1,29 @@
+export type Profile = {
+    id: string;
+    bio?: string | null | undefined;
+    interests?: [];
+    age?: Number | null | undefined;
+    gender?: string | null | undefined;
+    birthplace?: string | null | undefined;
+    prefecture?: string | null | undefined;
+    city?: string | null | undefined;
+    height?: Number | null | undefined;
+    style?: string | null | undefined;
+    oneWord?: string | null | undefined;
+    user: User[];
+    userId: string;
+    createdAt: string;
+};
+
 export type User = {
     id: string;
-    name: String?;
+    name?: string;
     email: string;
     password: string;
-    emailVerified: DateTime?;
-    image: String?;
-    createdAt: DateTime;
-    profile: [];
+    emailVerified?: string | null;
+    image?: string;
+    createdAt: string;
+    profile: Profile;
     messages: Message[];
     rooms: UsersOnRooms[];
     matches: UsersOnMatches[];
