@@ -2,8 +2,6 @@
 
 import { Button } from '@/components/ui/button';
 import { User } from '@/types';
-import { useSession } from 'next-auth/react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';

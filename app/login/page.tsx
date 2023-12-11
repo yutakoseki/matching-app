@@ -11,10 +11,13 @@ export default function Page() {
     const [cookies, setCookie, RemoveCookie] = useCookies(['session']);
     const router = useRouter();
 
-    if (status === 'authenticated') {
-        setCookie('session', session);
-        router.push('/');
-    }
+    useEffect(() => {
+        if (status === 'authenticated') {
+            setCookie('session', session);
+            console.log('login session', session);
+            router.push('/');
+        }
+    }, [status]);
 
     return <Login />;
 }
