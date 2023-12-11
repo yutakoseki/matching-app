@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import { Noto_Sans_JP } from 'next/font/google';
 import './globals.css';
 import NextAuthProvider from '@/providers/NextAuth';
-import Header from '@/components/Header';
+
 import { ThemeProvider } from '@/components/theme-provider';
 import Footer from '@/components/Footer';
+import Header from '@/components/Header';
 
 const notoSansJP = Noto_Sans_JP({ subsets: ['latin'] });
 
@@ -17,20 +18,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="ja">
             <body className={notoSansJP.className}>
-                <div className="flex flex-col w-screen h-screen">
-                    <NextAuthProvider>
-                        <ThemeProvider
-                            attribute="class"
-                            defaultTheme="system"
-                            enableSystem
-                            disableTransitionOnChange
-                        >
+                <NextAuthProvider>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        <div className="w-screen h-screen overflow-y-scroll">
                             <Header />
                             {children}
                             <Footer />
-                        </ThemeProvider>
-                    </NextAuthProvider>
-                </div>
+                        </div>
+                    </ThemeProvider>
+                </NextAuthProvider>
             </body>
         </html>
     );
