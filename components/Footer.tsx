@@ -8,7 +8,7 @@ export default function Footer() {
             <Tabs defaultValue="account" className="w-full h-full">
                 <TabsList className="w-full h-full flex justify-between">
                     <TabsTrigger value="Home" className="w-full h-full">
-                        Home
+                        <Link href={'/'}>Home</Link>
                     </TabsTrigger>
                     <TabsTrigger value="Friends" className="w-full h-full">
                         Friends
