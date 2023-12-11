@@ -42,6 +42,28 @@ export default function Profile() {
 
     return (
         <>
+            <div className="h-1/5 mb-4">
+                {profile && (
+                    <div>
+                        <div className="flex w-full mt-4">
+                            <div className="w-1/4 flex text-center justify-center items-center">
+                                <div className="h-20 w-20 rounded-full bg-slate-500">image</div>
+                            </div>
+                            <div className="w-3/4 pt-4 pl-4">
+                                <div className="flex">
+                                    <div>{profile.name}</div>
+                                </div>
+                                <div className="flex mb-4">
+                                    <div className="pr-4 truncate">@{profile.id}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="p-2">
+                            <div className="line-clamp-3">{profile.profile?.bio}</div>
+                        </div>
+                    </div>
+                )}
+            </div>
             <div className="w-screen bg-slate-400">
                 <Tabs defaultValue="account" className="w-screen bg-slate-700">
                     <TabsList className="w-full">
