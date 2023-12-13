@@ -37,7 +37,7 @@
     "react-cookie": "^6.1.1",
     "react-dom": "^18",
     "react-hook-form": "^7.48.2",
-    "supabase": "^1.115.5",
+    "supabase": "^1.123.4",
     "tailwind-merge": "^2.1.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4"

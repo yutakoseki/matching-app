@@ -11,9 +11,10 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
     // リクエストボディ
-    const { name, email, password } = await req.json();
+    const { userid, name, email, password } = await req.json();
     const res = await prisma.user.create({
         data: {
+            userId: userid,
             name: name,
             email: email,
             password: password,

@@ -26,8 +26,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         disableTransitionOnChange
                     >
                         <div className="w-screen h-screen overflow-y-scroll">
-                            <Header />
-                            {children}
+                            {/* ヘッダー */}
+                            <div className="w-screen h-18 sticky top-0 z-10">
+                                <Header />
+                            </div>
+                            {/* メイン */}
+                            <div className="h-screen">{children}</div>
+                            {/* フッター */}
                             <Footer />
                         </div>
                     </ThemeProvider>

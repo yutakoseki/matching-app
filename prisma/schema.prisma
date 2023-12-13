@@ -18,6 +18,7 @@ model Reset {
 
 model User {
   id        String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String           @unique
   name      String
   email     String           @unique
   password  String
@@ -27,6 +28,7 @@ model User {
   messages  Message[]
   rooms     UsersOnRooms[]
   matches   UsersOnMatches[]
+  follows   UsersOnFollows[]
 }
 
 model Profile {
@@ -97,4 +99,20 @@ model UsersOnMatches {
   createdAt DateTime @default(now())
 
   @@id([userId, matchId])
+}
+
+model Follow {
+  id        String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  users     UsersOnFollows[]
+  createdAt DateTime         @default(now())
+}
+
+model UsersOnFollows {
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.Uuid
+  follow    Follow   @relation(fields: [followId], references: [id])
+  followId  String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  @@id([userId, followId])
 }

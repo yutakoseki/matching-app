@@ -1,7 +1,6 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -24,6 +23,7 @@ export default function Signup() {
     const form = useForm<z.infer<typeof registerUserSchema>>({
         resolver: zodResolver(registerUserSchema),
         defaultValues: {
+            userid: '',
             name: '',
             email: '',
             password: '',
@@ -38,6 +38,7 @@ export default function Signup() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    userid: values.userid,
                     name: values.name,
                     email: values.email,
                     password: values.password,
@@ -57,57 +58,77 @@ export default function Signup() {
     }
 
     return (
-        <div className="flex items-center justify-center w-full h-full">
+        <div className="flex items-center justify-center w-full h-full p-8 -my-16">
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-1/3 ">
+                <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-4 bg-secondary w-full h-auto rounded-md"
+                >
                     <div className="p-2">
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>ユーザー名</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="username" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        <div className="p-2">
+                            <FormField
+                                control={form.control}
+                                name="userid"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>ユーザーID</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="userID" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="p-2">
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>ユーザー名</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="username" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="p-2">
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>メールアドレス</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="email" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="p-2">
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>パスワード</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="password" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <Button type="submit" className="w-full">
+                            登録
+                        </Button>
                     </div>
-                    <div className="p-2">
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>メールアドレス</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="email" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    <div className="p-2">
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>パスワード</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="password" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    <Button type="submit" className="w-full">
-                        登録
-                    </Button>
                 </form>
             </Form>
         </div>

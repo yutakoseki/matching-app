@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Settings, ChevronLeft, AlignJustify } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Profile() {
     // const { data: session, status } = useSession();
@@ -42,63 +44,105 @@ export default function Profile() {
 
     return (
         <>
-            <div className="h-1/5 mb-4">
+            {/* プロフィールヘッダー */}
+            <div className="w-full h-16 absolute top-0 z-20 bg-secondary text-secondary-foreground flex text-center justify-center items-center">
+                <div className="w-1/5 h-full flex items-center justify-start">
+                    <ChevronLeft strokeWidth={1} size={40} />
+                </div>
+                <div className="w-full h-full flex items-center justify-start">
+                    {profile && <div className="text-xl truncate">{profile.id}</div>}
+                </div>
+                <div className="w-full h-full flex items-center justify-end pr-4">
+                    <AlignJustify strokeWidth={1} size={30} />
+                </div>
+            </div>
+            {/* ユーザートップ */}
+            <div className="h-1/4">
                 {profile && (
-                    <div>
-                        <div className="flex w-full mt-4">
-                            <div className="w-1/4 flex text-center justify-center items-center">
-                                <div className="h-20 w-20 rounded-full bg-slate-500">image</div>
+                    <>
+                        <div className="w-full h-full pt-2">
+                            <div className="w-full h-2/5 flex">
+                                <div className="w-1/4 h-full flex text-center justify-end items-center">
+                                    <div className="h-20 w-20 rounded-full bg-slate-500">image</div>
+                                </div>
+                                <div className="w-3/4 h-full flex text-center pr-6">
+                                    <div className="w-1/3 h-full flex flex-col items-center justify-center ">
+                                        <div>1203</div>
+                                        <div className="text-sm">投稿</div>
+                                    </div>
+                                    <div className="w-1/3 h-full flex flex-col items-center justify-center">
+                                        <div>1203</div>
+                                        <div className="text-sm">フォロー中</div>
+                                    </div>
+                                    <div className="w-1/3 h-full flex flex-col items-center justify-center ">
+                                        <div>1203</div>
+                                        <div className="text-sm">フォロワー</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="w-3/4 pt-4 pl-4">
-                                <div className="flex">
+                            <div className="h-2/5">
+                                <div className="w-full h-1/6 pl-4">
+                                    <div className="flex items-center text-sm">{profile.name}</div>
+                                </div>
+                                <div className="w-full h-5/6 pt-2 px-4">
+                                    <div className="line-clamp-3 text-sm">
+                                        {profile.profile?.bio}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="w-full h-1/5 flex justify-between items-center px-4">
+                                <div className="w-1/2 h-6 text-center rounded-3xl text-xs bg-secondary">
+                                    <Link href={`/profile/edit/${profile.id}`}>
+                                        プロフィールを編集
+                                    </Link>
+                                </div>
+                                <div className="w-1/2 h-6 text-center rounded-3xl text-xs bg-secondary">
+                                    <Link href={`/profile/edit/${profile.id}`}>
+                                        プロフィールをシェア
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )}
+            </div>
+
+            {/* ユーザーメイン */}
+            <div className="w-screen h-screen">
+                <Tabs defaultValue="profile" className="w-screen h-12">
+                    <TabsList className="w-full h-full flex justify-between">
+                        <TabsTrigger value="post" className=" w-full h-full">
+                            ポスト
+                        </TabsTrigger>
+                        <TabsTrigger value="profile" className="w-full h-full">
+                            プロフィール
+                        </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="account"></TabsContent>
+                    <TabsContent value="profile">
+                        {/* profileがあれば表示 */}
+                        {profile && (
+                            <div className="p-8">
+                                <div className="flex mb-4">
+                                    <label>年齢：</label>
+                                    <div>{profile.id}</div>
+                                </div>
+                                <div className="flex mb-4">
+                                    <label>名前：</label>
                                     <div>{profile.name}</div>
                                 </div>
                                 <div className="flex mb-4">
-                                    <div className="pr-4 truncate">@{profile.id}</div>
+                                    <label>Email：</label>
+                                    <div>{profile.email}</div>
+                                </div>
+                                <div className="flex mb-4">
+                                    <label>登録日：</label>
+                                    <div>{profile.createdAt}</div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="p-2">
-                            <div className="line-clamp-3">{profile.profile?.bio}</div>
-                        </div>
-                    </div>
-                )}
-            </div>
-            <div className="w-screen bg-slate-400">
-                <Tabs defaultValue="account" className="w-screen bg-slate-700">
-                    <TabsList className="w-full">
-                        <TabsTrigger value="account">プロフィール</TabsTrigger>
-                        <TabsTrigger value="password">ポスト</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="account">Make changes to your account here.</TabsContent>
-                    <TabsContent value="password">Change your password here.</TabsContent>
+                        )}
+                    </TabsContent>
                 </Tabs>
-                <Button onClick={() => handleClick()}>編集</Button>
-                {/* profileがあれば表示 */}
-                {profile && (
-                    <div>
-                        <div className="flex mb-4">
-                            <label>ID：</label>
-                            <div>{profile.id}</div>
-                        </div>
-                        <div className="flex mb-4">
-                            <label>名前：</label>
-                            <div>{profile.name}</div>
-                        </div>
-                        <div className="flex mb-4">
-                            <label>Email：</label>
-                            <div>{profile.email}</div>
-                        </div>
-                        <div className="flex mb-4">
-                            <label>登録日：</label>
-                            <div>{profile.createdAt}</div>
-                        </div>
-                        <div className="flex mb-4">
-                            <label>自己紹介：</label>
-                            <div>{profile.profile?.bio}</div>
-                        </div>
-                    </div>
-                )}
             </div>
         </>
     );

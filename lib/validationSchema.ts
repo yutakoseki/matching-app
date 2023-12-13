@@ -2,6 +2,9 @@ import { z } from 'zod';
 
 // ユーザー登録
 export const registerUserSchema = z.object({
+    userid: z.string({ required_error: '必須項目です' }).min(1, {
+        message: 'ユーザーIDは必須入力項目です。',
+    }),
     name: z.string({ required_error: '必須項目です' }).min(1, {
         message: 'ユーザー名は必須入力項目です。',
     }),

@@ -61,6 +61,21 @@ export interface Database {
                 };
                 Relationships: [];
             };
+            Follow: {
+                Row: {
+                    createdAt: string;
+                    id: string;
+                };
+                Insert: {
+                    createdAt?: string;
+                    id?: string;
+                };
+                Update: {
+                    createdAt?: string;
+                    id?: string;
+                };
+                Relationships: [];
+            };
             Match: {
                 Row: {
                     createdAt: string;
@@ -232,6 +247,7 @@ export interface Database {
                     image: string | null;
                     name: string;
                     password: string;
+                    userId: string;
                 };
                 Insert: {
                     createdAt?: string;
@@ -240,6 +256,7 @@ export interface Database {
                     image?: string | null;
                     name: string;
                     password: string;
+                    userId: string;
                 };
                 Update: {
                     createdAt?: string;
@@ -248,8 +265,42 @@ export interface Database {
                     image?: string | null;
                     name?: string;
                     password?: string;
+                    userId?: string;
                 };
                 Relationships: [];
+            };
+            UsersOnFollows: {
+                Row: {
+                    createdAt: string;
+                    followId: string;
+                    userId: string;
+                };
+                Insert: {
+                    createdAt?: string;
+                    followId: string;
+                    userId: string;
+                };
+                Update: {
+                    createdAt?: string;
+                    followId?: string;
+                    userId?: string;
+                };
+                Relationships: [
+                    {
+                        foreignKeyName: 'UsersOnFollows_followId_fkey';
+                        columns: ['followId'];
+                        isOneToOne: false;
+                        referencedRelation: 'Follow';
+                        referencedColumns: ['id'];
+                    },
+                    {
+                        foreignKeyName: 'UsersOnFollows_userId_fkey';
+                        columns: ['userId'];
+                        isOneToOne: false;
+                        referencedRelation: 'User';
+                        referencedColumns: ['id'];
+                    },
+                ];
             };
             UsersOnMatches: {
                 Row: {

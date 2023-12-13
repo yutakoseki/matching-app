@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Tabs, TabsList } from '@/components/ui/tabs';
 
-export default function Header() {
+export default function ProfileHeader() {
     const { setTheme } = useTheme();
     return (
         <header className="w-screen h-full flex justify-between items-center text-center">
