@@ -28,6 +28,8 @@ import GenderSelect from '@/components/GenderSelect';
 import PrefectureSelect from '@/components/PrefectureSelect';
 import HeightSelect from '@/components/HeightSelect';
 import StyleSelect from '@/components/StyleSelect';
+import { AlignJustify, ChevronLeft } from 'lucide-react';
+import Link from 'next/link';
 
 export default function ProfileForm() {
     const [profile, setProfile] = useState<User>();
@@ -36,6 +38,8 @@ export default function ProfileForm() {
 
     useEffect(() => {
         setProfile(cookies.profile);
+        console.log('cookies', cookies.profile);
+        console.log('city', cookies.profile.profile.city);
     }, []);
 
     // フォーム
@@ -43,18 +47,18 @@ export default function ProfileForm() {
         resolver: zodResolver(profileSchema),
         // デフォルト値
         defaultValues: {
-            userid: cookies.profile.userid,
+            userid: cookies.profile.userId,
             name: cookies.profile.name,
             email: cookies.profile.email,
             password: cookies.profile.password,
-            bio: cookies.profile?.bio?.toString() ?? '',
-            age: cookies.profile?.age?.toString() ?? '',
-            gender: cookies.profile?.gender?.toString() ?? '',
-            prefecture: cookies.profile?.prefecture?.toString() ?? '',
-            city: cookies.profile?.city?.toString() ?? '',
-            birthplace: cookies.profile?.birthplace?.toString() ?? '',
-            height: cookies.profile?.height?.toString() ?? '',
-            style: cookies.profile?.style?.toString() ?? '',
+            bio: cookies.profile.profile.bio ?? '',
+            age: cookies.profile.profile.age?.toString() ?? '',
+            gender: cookies.profile.profile.gender ?? '',
+            prefecture: cookies.profile.profile.prefecture ?? '',
+            city: cookies.profile.profile.city ?? '',
+            birthplace: cookies.profile.profile.birthplace ?? '',
+            height: cookies.profile.profile.height?.toString() ?? '',
+            style: cookies.profile.profile.style ?? '',
         },
     });
 
@@ -140,6 +144,7 @@ export default function ProfileForm() {
             try {
                 const response = await fetch(url, params);
                 if (response.ok) {
+                    RemoveCookie('profile');
                     router.push(`/profile/${profile.id}`);
                 } else {
                     alert('更新に失敗しました');
@@ -152,215 +157,238 @@ export default function ProfileForm() {
     }
 
     return (
-        <div className="w-full h-full my-20">
-            <div className="w-screen h-1/5 flex items-center justify-center">
-                <div className="w-24 h-24 rounded-full bg-red-300 mr-4"></div>
-                <div className="w-24 h-24 rounded-full bg-red-300"></div>
+        <>
+            {/* プロフィールヘッダー */}
+            <div className="w-full h-16 fixed top-0 z-20 bg-secondary text-secondary-foreground flex text-center justify-center items-center">
+                <div className="w-1/5 h-full flex items-center justify-start">
+                    <Link href={`/profile/${profile?.id}`}>
+                        <ChevronLeft strokeWidth={1} size={40} />
+                    </Link>
+                </div>
+                <div className="w-full h-full flex items-center justify-start ml-8">
+                    {profile && <div className="text-xl truncate">{profile.userId}</div>}
+                </div>
+                <div className="w-full h-full flex items-center justify-end pr-4">
+                    <AlignJustify strokeWidth={1} size={30} />
+                </div>
             </div>
-            <div className="w-screen h-4/5 p-8">
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="userid"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>ユーザーID</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder={profile?.userId?.toString() ?? ''}
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>ユーザー名</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder={profile?.name?.toString() ?? ''}
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>メールアドレス</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder={profile?.email} {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>パスワード</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder={profile?.password} {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="bio"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>自己紹介</FormLabel>
-                                    <FormControl>
-                                        <Textarea {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="age"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>年齢</FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                    >
+            <div className="w-full h-full my-20">
+                <div className="w-screen h-1/5 flex items-center justify-center">
+                    <div className="w-24 h-24 rounded-full bg-red-300 mr-4"></div>
+                    <div className="w-24 h-24 rounded-full bg-red-300"></div>
+                </div>
+                <div className="w-screen h-4/5 p-8">
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                            <FormField
+                                control={form.control}
+                                name="userid"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>ユーザーID</FormLabel>
                                         <FormControl>
-                                            <AgeSelect
+                                            <Input
+                                                placeholder={profile?.userId?.toString() ?? ''}
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>ユーザー名</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder={profile?.name?.toString() ?? ''}
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>メールアドレス</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder={profile?.email} {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>パスワード</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder={profile?.password} {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="bio"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>自己紹介</FormLabel>
+                                        <FormControl>
+                                            <Textarea
+                                                placeholder={profile?.profile?.bio ?? ''}
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="age"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>年齢</FormLabel>
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                        >
+                                            <FormControl>
+                                                <AgeSelect
+                                                    value={
+                                                        field.value ? field.value.toString() : ''
+                                                    }
+                                                    onChange={field.onChange}
+                                                />
+                                            </FormControl>
+                                        </Select>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="gender"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>性別</FormLabel>
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                        >
+                                            <FormControl>
+                                                <GenderSelect
+                                                    value={
+                                                        field.value ? field.value.toString() : ''
+                                                    }
+                                                    onChange={field.onChange}
+                                                />
+                                            </FormControl>
+                                        </Select>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="prefecture"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>都道府県</FormLabel>
+                                        <FormControl>
+                                            <PrefectureSelect
                                                 value={field.value ? field.value.toString() : ''}
                                                 onChange={field.onChange}
                                             />
                                         </FormControl>
-                                    </Select>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="gender"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>性別</FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                    >
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="city"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>市区町村</FormLabel>
                                         <FormControl>
-                                            <GenderSelect
+                                            <Input
+                                                placeholder={
+                                                    profile?.profile.city
+                                                        ? profile.profile.city.toString()
+                                                        : ''
+                                                }
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="birthplace"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>出身地</FormLabel>
+                                        <FormControl>
+                                            <PrefectureSelect
                                                 value={field.value ? field.value.toString() : ''}
                                                 onChange={field.onChange}
                                             />
                                         </FormControl>
-                                    </Select>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="prefecture"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>都道府県</FormLabel>
-                                    <FormControl>
-                                        <PrefectureSelect
-                                            value={field.value ? field.value.toString() : ''}
-                                            onChange={field.onChange}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="city"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>市区町村</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder={
-                                                profile?.profile.city
-                                                    ? profile.profile.city.toString()
-                                                    : ''
-                                            }
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="birthplace"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>出身地</FormLabel>
-                                    <FormControl>
-                                        <PrefectureSelect
-                                            value={field.value ? field.value.toString() : ''}
-                                            onChange={field.onChange}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="height"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>身長</FormLabel>
-                                    <FormControl>
-                                        <HeightSelect
-                                            value={field.value ? field.value.toString() : ''}
-                                            onChange={field.onChange}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="style"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>スタイル</FormLabel>
-                                    <FormControl>
-                                        <StyleSelect
-                                            value={field.value ? field.value.toString() : ''}
-                                            onChange={field.onChange}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <Button type="submit" className="w-full">
-                            登録
-                        </Button>
-                    </form>
-                </Form>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="height"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>身長</FormLabel>
+                                        <FormControl>
+                                            <HeightSelect
+                                                value={field.value ? field.value.toString() : ''}
+                                                onChange={field.onChange}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="style"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>スタイル</FormLabel>
+                                        <FormControl>
+                                            <StyleSelect
+                                                value={field.value ? field.value.toString() : ''}
+                                                onChange={field.onChange}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <Button type="submit" className="w-full">
+                                登録
+                            </Button>
+                        </form>
+                    </Form>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

@@ -72,7 +72,7 @@ export default function Profile() {
                 <div className="h-48 pt-4">
                     {profile && (
                         <>
-                            <div className="w-full h-full pt-2">
+                            <div className="w-full h-full">
                                 <div className="w-full h-2/5 flex">
                                     <div className="w-1/4 h-full flex text-center justify-end items-center">
                                         <div className="h-20 w-20 rounded-full bg-slate-500">
@@ -95,24 +95,24 @@ export default function Profile() {
                                     </div>
                                 </div>
                                 <div className="h-2/5">
-                                    <div className="w-full h-1/6 pl-4">
+                                    <div className="w-full h-1/6 px-8 pt-2">
                                         <div className="flex items-center text-sm">
                                             {profile.name}
                                         </div>
                                     </div>
-                                    <div className="w-full h-5/6 pt-2 px-4">
-                                        <div className="line-clamp-3 text-sm">
+                                    <div className="w-full h-5/6 px-8 py-4">
+                                        <div className="line-clamp-3 text-xs">
                                             {profile.profile?.bio}
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-full h-1/5 flex justify-between items-center px-4">
-                                    <div className="w-1/2 h-6 flex items-center justify-center rounded-3xl text-xs bg-secondary">
+                                <div className="w-full h-1/5 flex justify-between items-center pt-2 px-4">
+                                    <div className="w-1/2 h-5 flex items-center justify-center rounded-3xl text-xs bg-secondary">
                                         <Link href={`/profile/edit/${profile.id}`}>
                                             プロフィールを編集
                                         </Link>
                                     </div>
-                                    <div className="w-1/2 h-6 flex items-center justify-center rounded-3xl text-xs bg-secondary">
+                                    <div className="w-1/2 h-5 flex items-center justify-center rounded-3xl text-xs bg-secondary">
                                         <Link href={`/profile/edit/${profile.id}`}>
                                             プロフィールをシェア
                                         </Link>

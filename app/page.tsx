@@ -13,6 +13,7 @@ export default function Home() {
     useEffect(() => {
         if (status === 'authenticated') {
             setCookie('session', session);
+            console.log('login session', session);
         }
     }, [status]);
 
@@ -22,6 +23,7 @@ export default function Home() {
                 <div>
                     <p>セッションの期限：{session.expires}</p>
                     <p>ID：{session.user?.id}</p>
+                    <p>ユーザーID：{session.user?.userid}</p>
                     <p>ようこそ、{session.user?.name}さん</p>
                     <img src={session.user?.image ?? ``} alt="" style={{ borderRadius: '50px' }} />
                     <div>

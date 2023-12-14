@@ -36,7 +36,13 @@ export const options: NextAuthOptions = {
                 });
 
                 if (user && user?.password === credentials?.password) {
-                    return { id: user.id, name: user.email, email: user.email, role: 'admin' };
+                    return {
+                        id: user.id,
+                        userid: user.userId,
+                        name: user.name,
+                        email: user.email,
+                        role: 'admin',
+                    };
                 } else {
                     return null;
                 }
@@ -53,6 +59,9 @@ export const options: NextAuthOptions = {
                 const u = user as any;
                 token.role = u.role;
                 token.id = u.id;
+                token.userid = u.userid;
+                token.name = u.name;
+                token.email = u.email;
             }
             if (account) {
                 token.accessToken = account.access_token;
@@ -68,6 +77,9 @@ export const options: NextAuthOptions = {
                     ...session.user,
                     role: token.role,
                     id: token.id,
+                    userid: token.userid,
+                    name: token.name,
+                    email: token.email,
                 },
             };
         },
