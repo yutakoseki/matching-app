@@ -58,11 +58,11 @@ export default function Signup() {
     }
 
     return (
-        <div className="flex items-center justify-center w-full h-full p-8 -my-16">
+        <div className="flex items-center justify-center w-full h-full p-8">
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-4 bg-secondary w-full h-auto rounded-md"
+                    className="space-y-4 bg-secondary w-full h-auto rounded-md grow"
                 >
                     <div className="p-2">
                         <div className="p-2">

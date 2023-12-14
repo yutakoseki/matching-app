@@ -19,6 +19,9 @@ export const registerUserSchema = z.object({
 
 // プロフィール更新
 export const profileSchema = z.object({
+    userid: z.string({ required_error: '必須項目です' }).min(1, {
+        message: 'ユーザーIDは必須入力項目です。',
+    }),
     name: z.string({ required_error: '必須項目です' }).min(1, {
         message: 'ユーザー名は必須入力項目です。',
     }),
@@ -29,4 +32,11 @@ export const profileSchema = z.object({
         message: 'パスワードは8文字以上で入力してください。',
     }),
     bio: z.string().optional(),
+    age: z.string().optional(),
+    gender: z.string().optional(),
+    prefecture: z.string().optional(),
+    city: z.string().optional(),
+    birthplace: z.string().optional(),
+    height: z.string().optional(),
+    style: z.string().optional(),
 });

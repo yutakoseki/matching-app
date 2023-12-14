@@ -25,15 +25,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         enableSystem
                         disableTransitionOnChange
                     >
-                        <div className="w-screen h-screen overflow-y-scroll">
+                        <div className="w-screen h-full">
                             {/* ヘッダー */}
-                            <div className="w-screen h-18 sticky top-0 z-10">
+                            <div className="w-screen h-18 sticky top-0">
                                 <Header />
                             </div>
                             {/* メイン */}
-                            <div className="h-screen">{children}</div>
+                            <div className="w-screen h-full">{children}</div>
                             {/* フッター */}
-                            <Footer />
+                            <div className="w-screen h-18 fixed bottom-0">
+                                <Footer />
+                            </div>
                         </div>
                     </ThemeProvider>
                 </NextAuthProvider>

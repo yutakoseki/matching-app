@@ -11,13 +11,14 @@ export async function GET() {
 
 // プロフィール修正
 export async function POST(req: NextRequest) {
-    const { userId, name, email, password, bio } = await req.json();
+    const { id, userId, name, email, password, bio } = await req.json();
     console.log('server bio', bio);
     const res = await prisma.user.update({
         where: {
-            id: userId,
+            id: id,
         },
         data: {
+            userId: userId,
             name: name,
             email: email,
             password: password,
