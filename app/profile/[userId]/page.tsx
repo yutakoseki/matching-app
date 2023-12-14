@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Settings, ChevronLeft, AlignJustify } from 'lucide-react';
 import Link from 'next/link';
 import { DateTimeFormatOptions } from 'intl';
+import HunbergerMenu from '@/components/HunbergerMenu';
 
 export default function Profile() {
     // const { data: session, status } = useSession();
@@ -64,7 +65,7 @@ export default function Profile() {
                     {profile && <div className="text-xl truncate">{profile.userId}</div>}
                 </div>
                 <div className="w-full h-full flex items-center justify-end pr-4">
-                    <AlignJustify strokeWidth={1} size={30} />
+                    <HunbergerMenu />
                 </div>
             </div>
             <div className="h-full">
