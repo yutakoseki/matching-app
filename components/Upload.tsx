@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { UploadImage } from './UploadImage';
 import supabase from '@/lib/supabase';
 import { FolderList } from '@/types';
+import { useCookies } from 'react-cookie';
 
 export default function Upload() {
     const [path, setPathName] = useState<string | undefined>();
+    const [cookies, setCookie, RemoveCookie] = useCookies(['session', 'profile']);
     const handleUploadStorage = async (folder: FolderList | null) => {
         if (!folder || !folder.length) return;
         const { path } = await UploadImage({
