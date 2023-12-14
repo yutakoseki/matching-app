@@ -30,6 +30,7 @@ import HeightSelect from '@/components/HeightSelect';
 import StyleSelect from '@/components/StyleSelect';
 import { AlignJustify, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
+import Upload from '@/components/Upload';
 
 export default function ProfileForm() {
     const [profile, setProfile] = useState<User>();
@@ -174,6 +175,7 @@ export default function ProfileForm() {
             </div>
             <div className="w-full h-full my-20">
                 <div className="w-screen h-1/5 flex items-center justify-center">
+                    <Upload />
                     <div className="w-24 h-24 rounded-full bg-red-300 mr-4"></div>
                     <div className="w-24 h-24 rounded-full bg-red-300"></div>
                 </div>

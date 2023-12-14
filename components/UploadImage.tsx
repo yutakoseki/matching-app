@@ -1,16 +1,9 @@
+'use client';
+import supabase from '@/lib/supabase';
+import { UploadPathname, UploadStorage } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
-import { supabase } from '../utils/supabase';
 
-type UploadStorage = {
-    folder: FolderList;
-    bucketName: string;
-};
-
-type UploadPathname = {
-    path: string;
-};
-
-export const uploadStorage = async ({
+export const UploadImage = async ({
     folder,
     bucketName,
 }: UploadStorage): Promise<UploadPathname> => {

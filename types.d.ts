@@ -44,3 +44,13 @@ export type Room = {
     users: User[];
     createdAt: string;
 };
+
+// 画像アップロード
+export type UploadStorage = {
+    folder: FolderList; // 画像のフォルダリスト
+    bucketName: string; // バケットの名前
+};
+export type FolderList = Array<File>; // 画像のフォルダリスト
+export type UploadPathname = {
+    path: string; // パス名
+};
