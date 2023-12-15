@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
             name: name,
             email: email,
             password: password,
+            image: 'https://idapqluhqmvmvtwjnwnq.supabase.co/storage/v1/object/public/pictures/profiles/default/chinanago.png',
             profile: {
                 create: { bio: '' },
             },
