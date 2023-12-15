@@ -39,8 +39,6 @@ export default function ProfileForm() {
 
     useEffect(() => {
         setProfile(cookies.profile);
-        console.log('cookies', cookies.profile);
-        console.log('city', cookies.profile.profile.city);
     }, []);
 
     // フォーム
@@ -174,11 +172,11 @@ export default function ProfileForm() {
                 </div>
             </div>
             <div className="w-full h-full my-20">
+                {/* プロフィール画像アップロード */}
                 <div className="w-screen h-1/5 flex items-center justify-center">
                     <Upload />
-                    <div className="w-24 h-24 rounded-full bg-red-300 mr-4"></div>
-                    <div className="w-24 h-24 rounded-full bg-red-300"></div>
                 </div>
+                {/* プロフィール詳細 */}
                 <div className="w-screen h-4/5 p-8">
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

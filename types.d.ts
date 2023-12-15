@@ -49,6 +49,7 @@ export type Room = {
 export type UploadStorage = {
     folder: FolderList; // 画像のフォルダリスト
     bucketName: string; // バケットの名前
+    id: string;
 };
 export type FolderList = Array<File>; // 画像のフォルダリスト
 export type UploadPathname = {

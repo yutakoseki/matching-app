@@ -1,15 +1,15 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { User } from '@/types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Settings, ChevronLeft, AlignJustify } from 'lucide-react';
+
 import Link from 'next/link';
 import { DateTimeFormatOptions } from 'intl';
 import HunbergerMenu from '@/components/HunbergerMenu';
+import Image from 'next/image';
 
 export default function Profile() {
     // const { data: session, status } = useSession();
@@ -30,7 +30,6 @@ export default function Profile() {
             // データがあるか確認
             if (data && data[0]) {
                 setCookie('profile', JSON.stringify(data[0]));
-                console.log('json', JSON.stringify(data[0]));
                 setProfile(data[0]);
                 console.log('data', data[0]);
             } else {
@@ -39,10 +38,6 @@ export default function Profile() {
         };
         getProfile();
     }, []);
-
-    const handleClick = () => {
-        router.push(`/profile/edit/${cookies.session.user.id}`);
-    };
 
     // 日付型の修正
     const formatDateTime = (dateTimeString: string) => {
@@ -74,11 +69,15 @@ export default function Profile() {
                     {profile && (
                         <>
                             <div className="w-full h-full">
-                                <div className="w-full h-2/5 flex">
+                                <div className="w-full h-2/5 flex px-4">
                                     <div className="w-1/4 h-full flex text-center justify-end items-center">
-                                        <div className="h-20 w-20 rounded-full bg-slate-500">
-                                            image
-                                        </div>
+                                        <img
+                                            src={`${profile.image}`}
+                                            alt=""
+                                            width="500"
+                                            height="500"
+                                            className="w-20 h-20 rounded-full "
+                                        />
                                     </div>
                                     <div className="w-3/4 h-full flex text-center pr-6">
                                         <div className="w-1/3 h-full flex flex-col items-center justify-center ">
